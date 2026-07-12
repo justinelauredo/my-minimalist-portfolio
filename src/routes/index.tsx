@@ -501,10 +501,20 @@ function Portfolio() {
           <section id="licenses" className="mt-28 fade-up">
             <SectionHeader num="02" label="licenses & certifications" />
             <h2 className="display-pixel text-3xl lowercase text-ink">
-              credentials, conferences, coursework
+              <Typewriter
+                words={[
+                  "credentials",
+                  "conferences",
+                  "coursework",
+                ]}
+              />
             </h2>
-            <div className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {[
+            <p className="mt-3 max-w-xl text-[14px] text-gray-500">
+              A stack of licenses, IEEE presentations, and verified coursework —
+              click through, or let it cycle.
+            </p>
+            <CertStack
+              items={[
                 {
                   t: "Licensed Electronics Engineer (ECE)",
                   o: "Professional Regulation Commission — Philippines",
@@ -542,23 +552,8 @@ function Portfolio() {
                   t: "Intro to Quantum Natural Language Processing",
                   o: "Quantum Computing Society of the Philippines (QCSP)",
                 },
-              ].map((c) => (
-                <Card key={c.t}>
-                  <div className="flex items-start justify-between gap-3">
-                    <p className="label-mono">{c.o.split(" — ")[0].split(" (")[0]}</p>
-                    {c.featured && <InkChip>licensed</InkChip>}
-                  </div>
-                  <h3 className="mt-2 text-[15px] font-medium leading-snug text-ink">
-                    {c.t}
-                  </h3>
-                  <p className="mt-2 text-[13px] text-gray-500">{c.o}</p>
-                  {c.note && <p className="mt-1 text-[12px] text-gray-500">{c.note}</p>}
-                  <p className="mt-4 font-mono text-[10px] uppercase tracking-widest text-gray-400">
-                    ‹ verify ›
-                  </p>
-                </Card>
-              ))}
-            </div>
+              ]}
+            />
           </section>
 
           {/* Experience */}
