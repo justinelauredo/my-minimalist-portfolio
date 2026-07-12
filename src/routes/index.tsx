@@ -1,5 +1,185 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+/* ---------- Typewriter ---------- */
+function Typewriter({
+  words,
+  className = "",
+  typeMs = 70,
+  eraseMs = 40,
+  holdMs = 1400,
+}: {
+  words: string[];
+  className?: string;
+  typeMs?: number;
+  eraseMs?: number;
+  holdMs?: number;
+}) {
+  const [i, setI] = useState(0);
+  const [text, setText] = useState("");
+  const [erasing, setErasing] = useState(false);
+  const reduced = useRef(false);
+
+  useEffect(() => {
+    reduced.current =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }, []);
+
+  useEffect(() => {
+    if (reduced.current) {
+      setText(words[i]);
+      return;
+    }
+    const target = words[i];
+    if (!erasing && text === target) {
+      const t = setTimeout(() => setErasing(true), holdMs);
+      return () => clearTimeout(t);
+    }
+    if (erasing && text === "") {
+      setErasing(false);
+      setI((v) => (v + 1) % words.length);
+      return;
+    }
+    const t = setTimeout(
+      () => {
+        setText(
+          erasing ? target.slice(0, text.length - 1) : target.slice(0, text.length + 1)
+        );
+      },
+      erasing ? eraseMs : typeMs
+    );
+    return () => clearTimeout(t);
+  }, [text, erasing, i, words, typeMs, eraseMs, holdMs]);
+
+  return (
+    <span className={className}>
+      {text}
+      <span className="ml-0.5 inline-block w-[0.55ch] animate-pulse text-gray-400">|</span>
+    </span>
+  );
+}
+
+/* ---------- Certification card stack ---------- */
+type Cert = { t: string; o: string; note?: string; featured?: boolean };
+
+function CertStack({ items }: { items: Cert[] }) {
+  const [i, setI] = useState(0);
+  const [leaving, setLeaving] = useState<number | null>(null);
+  const [paused, setPaused] = useState(false);
+  const timer = useRef<number | null>(null);
+
+  const advance = (dir: 1 | -1 = 1) => {
+    if (leaving !== null) return;
+    setLeaving(i);
+    window.setTimeout(() => {
+      setI((v) => (v + dir + items.length) % items.length);
+      setLeaving(null);
+    }, 420);
+  };
+
+  useEffect(() => {
+    if (paused) return;
+    timer.current = window.setTimeout(() => advance(1), 4200);
+    return () => {
+      if (timer.current) window.clearTimeout(timer.current);
+    };
+  }, [i, paused, leaving]);
+
+  return (
+    <div
+      className="mt-8"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+    >
+      <div className="relative h-[240px] sm:h-[220px]">
+        {items.map((c, idx) => {
+          const rel = (idx - i + items.length) % items.length;
+          const isLeaving = leaving === idx;
+          const visible = rel < 3;
+
+          let style: React.CSSProperties;
+          if (isLeaving) {
+            style = {
+              transform: "translate3d(120%, -8px, 0) rotate(5deg)",
+              opacity: 0,
+              zIndex: 60,
+            };
+          } else if (visible) {
+            style = {
+              transform: `translate3d(0, ${rel * 10}px, 0) scale(${1 - rel * 0.04})`,
+              opacity: rel === 0 ? 1 : rel === 1 ? 0.75 : 0.45,
+              zIndex: 50 - rel,
+              pointerEvents: rel === 0 ? "auto" : "none",
+            };
+          } else {
+            style = {
+              transform: "translate3d(0, 30px, 0) scale(0.88)",
+              opacity: 0,
+              zIndex: 0,
+              pointerEvents: "none",
+            };
+          }
+
+          return (
+            <article
+              key={c.t}
+              style={{
+                ...style,
+                transition:
+                  "transform 420ms cubic-bezier(0.16,1,0.3,1), opacity 350ms ease",
+              }}
+              className="card-soft absolute inset-x-0 p-6"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <p className="label-mono">{c.o.split(" — ")[0].split(" (")[0]}</p>
+                {c.featured ? (
+                  <span className="inline-flex items-center rounded-full bg-ink px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-background">
+                    licensed
+                  </span>
+                ) : (
+                  <span className="inline-flex items-center rounded-full border border-gray-300 px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-gray-500">
+                    {String(i + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
+                  </span>
+                )}
+              </div>
+              <h3 className="mt-3 text-[17px] font-medium leading-snug text-ink">
+                {c.t}
+              </h3>
+              <p className="mt-2 text-[13px] text-gray-500">{c.o}</p>
+              {c.note && <p className="mt-1 text-[12px] text-gray-500">{c.note}</p>}
+              <p className="mt-4 font-mono text-[10px] uppercase tracking-widest text-gray-400">
+                ‹ verify ›
+              </p>
+            </article>
+          );
+        })}
+      </div>
+
+      <div className="mt-6 flex items-center justify-between">
+        <p className="label-mono">
+          {String(i + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
+        </p>
+        <div className="flex gap-2">
+          <button
+            onClick={() => advance(-1)}
+            className="rounded-md border border-gray-300 px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest text-ink transition-colors hover:bg-gray-50"
+            aria-label="Previous certification"
+          >
+            ← prev
+          </button>
+          <button
+            onClick={() => advance(1)}
+            className="rounded-md bg-ink px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest text-background transition-opacity hover:opacity-90"
+            aria-label="Next certification"
+          >
+            next →
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
