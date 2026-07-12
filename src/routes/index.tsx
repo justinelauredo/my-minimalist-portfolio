@@ -391,7 +391,16 @@ function Portfolio() {
                 engr. justine d. lauredo,{" "}
                 <span className="text-gray-500">ect</span>
               </h1>
-              <p className="mt-3 font-serif text-xl text-gray-700">AI Researcher</p>
+              <p className="mt-3 font-serif text-xl text-gray-700">
+                <Typewriter
+                  words={[
+                    "AI Researcher",
+                    "Electronics Engineer",
+                    "IoT Prototyper",
+                    "IEEE Author",
+                  ]}
+                />
+              </p>
               <p className="mt-6 max-w-xl text-[15px] leading-relaxed text-gray-500">
                 Licensed Electronics Engineer & Technician · IEEE-published researcher.
                 Fascinated by the mechanics behind how things work — I use computers to
