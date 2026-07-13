@@ -55,6 +55,7 @@
   --shadow-card: 0 8px 22px -14px rgb(0 0 0 / 0.25);
   --shadow-card-hover: 0 18px 36px -20px rgb(0 0 0 / 0.4);
   --dot-color: rgb(10 10 10 / 0.9);
+  --bg-dot-color: rgb(10 10 10 / 0.06);
 
   color-scheme: light;
 }
