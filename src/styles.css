@@ -92,6 +92,10 @@
   }
   body {
     background-color: var(--color-background);
+    background-image:
+      radial-gradient(circle at 1px 1px, var(--dot-color) 1px, transparent 0);
+    background-size: 28px 28px;
+    background-attachment: fixed;
     color: var(--color-foreground);
     font-family: var(--font-sans);
     font-size: 15px;
