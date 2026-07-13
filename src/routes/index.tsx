@@ -1124,7 +1124,7 @@ function Portfolio() {
   };
 
   return (
-    <div id="top" className="flex h-screen flex-col overflow-hidden bg-background text-foreground lg:block">
+    <div id="top" className="flex h-screen flex-col overflow-hidden text-foreground lg:block">
       <Sidebar active={active} onSelect={setActive} />
       <TopBar active={active} onSelect={setActive} />
 
