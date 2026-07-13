@@ -1124,15 +1124,12 @@ function Portfolio() {
   };
 
   return (
-    <div id="top" className="h-screen overflow-hidden bg-background text-foreground">
+    <div id="top" className="flex h-screen flex-col overflow-hidden bg-background text-foreground lg:block">
       <Sidebar active={active} onSelect={setActive} />
       <TopBar active={active} onSelect={setActive} />
 
-      <main className="h-screen overflow-hidden lg:ml-56">
-        <div
-          key={active}
-          className="tab-enter h-full overflow-y-auto"
-        >
+      <main className="min-h-0 flex-1 overflow-hidden lg:ml-56 lg:h-screen">
+        <div key={active} className="tab-enter h-full overflow-y-auto">
           <div className="mx-auto max-w-3xl px-4 py-10 sm:px-8 lg:px-12 lg:py-16">
             {renderActive()}
 
