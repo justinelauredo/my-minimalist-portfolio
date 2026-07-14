@@ -70,123 +70,64 @@ function Typewriter({
   );
 }
 
-/* ---------- Certification card stack ---------- */
-type Cert = { t: string; o: string; note?: string; featured?: boolean };
+/* ---------- Certification scattered grid (bryl-minimal style) ---------- */
+type CertCard = {
+  title: string;
+  issuer: string;
+  note?: string;
+  href: string;
+  logo: string;
+};
+type CertGroup = { label: string; items: CertCard[] };
 
-function CertStack({ items }: { items: Cert[] }) {
-  const [i, setI] = useState(0);
-  const [leaving, setLeaving] = useState<number | null>(null);
-  const [paused, setPaused] = useState(false);
-  const timer = useRef<number | null>(null);
-
-  const advance = (dir: 1 | -1 = 1) => {
-    if (leaving !== null) return;
-    setLeaving(i);
-    window.setTimeout(() => {
-      setI((v) => (v + dir + items.length) % items.length);
-      setLeaving(null);
-    }, 420);
-  };
-
-  useEffect(() => {
-    if (paused) return;
-    timer.current = window.setTimeout(() => advance(1), 4200);
-    return () => {
-      if (timer.current) window.clearTimeout(timer.current);
-    };
-  }, [i, paused, leaving]);
-
+function CertGrid({ groups }: { groups: CertGroup[] }) {
   return (
-    <div
-      className="mt-8"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
-      <div className="relative h-[240px] sm:h-[220px]">
-        {items.map((c, idx) => {
-          const rel = (idx - i + items.length) % items.length;
-          const isLeaving = leaving === idx;
-          const visible = rel < 3;
-
-          let style: React.CSSProperties;
-          if (isLeaving) {
-            style = {
-              transform: "translate3d(120%, -8px, 0) rotate(5deg)",
-              opacity: 0,
-              zIndex: 60,
-            };
-          } else if (visible) {
-            style = {
-              transform: `translate3d(0, ${rel * 10}px, 0) scale(${1 - rel * 0.04})`,
-              opacity: rel === 0 ? 1 : rel === 1 ? 0.75 : 0.45,
-              zIndex: 50 - rel,
-              pointerEvents: rel === 0 ? "auto" : "none",
-            };
-          } else {
-            style = {
-              transform: "translate3d(0, 30px, 0) scale(0.88)",
-              opacity: 0,
-              zIndex: 0,
-              pointerEvents: "none",
-            };
-          }
-
-          return (
-            <article
-              key={c.t}
-              style={{
-                ...style,
-                transition:
-                  "transform 420ms cubic-bezier(0.16,1,0.3,1), opacity 350ms ease",
-              }}
-              className="card-soft absolute inset-x-0 p-6"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <p className="label-mono">{c.o.split(" — ")[0].split(" (")[0]}</p>
-                {c.featured ? (
-                  <span className="inline-flex items-center rounded-full bg-ink px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-background">
-                    licensed
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center rounded-full border border-gray-300 px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-gray-500">
-                    {String(i + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
-                  </span>
-                )}
-              </div>
-              <h3 className="mt-3 text-[17px] font-medium leading-snug text-ink">
-                {c.t}
-              </h3>
-              <p className="mt-2 text-[13px] text-gray-500">{c.o}</p>
-              {c.note && <p className="mt-1 text-[12px] text-gray-500">{c.note}</p>}
-              <p className="mt-4 font-mono text-[10px] uppercase tracking-widest text-gray-400">
-                ‹ verify ›
-              </p>
-            </article>
-          );
-        })}
-      </div>
-
-      <div className="mt-6 flex items-center justify-between">
-        <p className="label-mono">
-          {String(i + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
-        </p>
-        <div className="flex gap-2">
-          <button
-            onClick={() => advance(-1)}
-            className="rounded-md border border-gray-300 px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest text-ink transition-colors hover:bg-gray-50"
-            aria-label="Previous certification"
-          >
-            ← prev
-          </button>
-          <button
-            onClick={() => advance(1)}
-            className="rounded-md bg-ink px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest text-background transition-opacity hover:opacity-90"
-            aria-label="Next certification"
-          >
-            next →
-          </button>
+    <div className="mt-8 space-y-10 sm:space-y-14">
+      {groups.map((g) => (
+        <div key={g.label}>
+          <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.25em] text-gray-500 sm:mb-5 sm:text-[11px]">
+            {g.label}
+          </p>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+            {g.items.map((c, idx) => {
+              const rots = [-2, 1.5, -1, 2, -1.8, 1];
+              const rot = rots[idx % rots.length];
+              return (
+                <a
+                  key={c.title}
+                  href={c.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ transform: `rotate(${rot}deg)` }}
+                  className="cert-card group relative flex flex-col items-center justify-between rounded-[14px] border border-gray-200 bg-card p-4 text-center shadow-[var(--shadow-card)] sm:p-5"
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-background sm:h-11 sm:w-11">
+                    <img
+                      src={c.logo}
+                      alt=""
+                      className="max-h-full max-w-full object-contain"
+                    />
+                  </div>
+                  <h3 className="mt-3 text-[12px] font-medium leading-snug text-gray-700 transition-colors group-hover:text-ink sm:mt-4 sm:text-[13px]">
+                    {c.title}
+                  </h3>
+                  <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.18em] text-gray-500 transition-colors group-hover:text-ink sm:text-[10px]">
+                    {c.issuer}
+                  </p>
+                  {c.note && (
+                    <p className="mt-1 line-clamp-2 text-[10px] leading-snug text-gray-500 transition-colors group-hover:text-gray-700 sm:text-[11px]">
+                      {c.note}
+                    </p>
+                  )}
+                  <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.22em] text-gray-400 transition-colors group-hover:text-ink sm:mt-4 sm:text-[10px]">
+                    ‹ verify ›
+                  </p>
+                </a>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 }
@@ -197,7 +138,7 @@ export const Route = createFileRoute("/")({
 
 const NAV = [
   { id: "about", label: "about", num: "01" },
-  { id: "licenses", label: "licenses", num: "02" },
+  { id: "licenses", label: "licenses & certs", num: "02" },
   { id: "experience", label: "experience", num: "03" },
   { id: "research", label: "research", num: "04" },
   { id: "publications", label: "publications", num: "05" },
