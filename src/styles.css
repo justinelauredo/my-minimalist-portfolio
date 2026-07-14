@@ -210,3 +210,40 @@
     transition: none !important;
   }
 }
+
+@utility cert-card {
+  transition:
+    transform 380ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 380ms cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 380ms ease;
+  will-change: transform;
+}
+.cert-card:hover {
+  transform: translateY(-5px) rotate(0deg) !important;
+  box-shadow: var(--shadow-card-hover);
+  border-color: color-mix(in oklab, var(--ink) 30%, var(--gray-200));
+}
+.cert-card:hover h3,
+.cert-card:hover p {
+  color: var(--gray-800);
+}
+.dark .cert-card:hover h3,
+.dark .cert-card:hover p {
+  color: #f4f4f5;
+}
+
+@utility portrait-frame {
+  position: relative;
+  border-radius: 9999px;
+  padding: 3px;
+  background:
+    conic-gradient(
+      from 140deg,
+      var(--ink) 0deg,
+      transparent 60deg,
+      var(--ink) 180deg,
+      transparent 260deg,
+      var(--ink) 360deg
+    );
+  box-shadow: var(--shadow-card);
+}
