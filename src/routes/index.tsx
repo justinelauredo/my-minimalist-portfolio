@@ -467,51 +467,83 @@ function LicensesSection() {
   return (
     <section className="fade-up">
       <SectionHeader num="02" label="licenses & certifications" />
-      <h2 className="display-pixel text-3xl lowercase text-ink">
+      <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">
         <Typewriter words={["credentials", "conferences", "coursework"]} />
       </h2>
-      <p className="mt-3 max-w-xl text-justify text-[14px] text-gray-500">
-        A stack of licenses, IEEE presentations, and verified coursework — click through,
-        or let it cycle.
+      <p className="mt-3 max-w-xl text-justify text-[13px] text-gray-500 sm:text-[14px]">
+        Licenses, IEEE conference presentations, and verified coursework — every card
+        links to its issuer for verification.
       </p>
-      <CertStack
-        items={[
+      <CertGrid
+        groups={[
           {
-            t: "Licensed Electronics Engineer (ECE)",
-            o: "Professional Regulation Commission — Philippines",
-            featured: true,
+            label: "Licensure",
+            items: [
+              {
+                title: "Licensed Electronics Engineer (ECE)",
+                issuer: "PRC — Philippines",
+                logo: prcAsset.url,
+                href: "https://www.prcboard.com/eele-results-march-2026-electronics-engineering-licensure-exam-list-of-passers",
+              },
+              {
+                title: "Licensed Electronics Technician (ECT)",
+                issuer: "PRC — Philippines",
+                logo: prcAsset.url,
+                href: "https://www.prcboard.com/etle-results-march-2026-electronics-technician-licensure-exam-list-of-passers",
+              },
+            ],
           },
           {
-            t: "Licensed Electronics Technician (ECT)",
-            o: "Professional Regulation Commission — Philippines",
-            featured: true,
+            label: "Conferences",
+            items: [
+              {
+                title: "IEEE ICPEA 2025 — Research Presenter",
+                issuer: "Universiti Teknologi MARA",
+                note: "5th Intl. Conf. on Power Engineering Applications · Selangor, MY",
+                logo: utmAsset.url,
+                href: "https://drive.google.com/file/d/1kLrObFTL0J4BHw-A5rLcCgLZ09k6cgoz/view?usp=sharing",
+              },
+              {
+                title: "IBDAP 2025",
+                issuer: "Big Data Institute (BDI)",
+                note: "6th Intl. Conf. on Big Data Analytics · Chiang Mai, TH",
+                logo: bdiAsset.url,
+                href: "https://drive.google.com/file/d/1kAwH-8RJSuf0ljkFCpRxZF-soMZ7ZWaH/view?usp=sharing",
+              },
+            ],
           },
           {
-            t: "IEEE ICPEA 2025 — Research Presenter",
-            o: "Universiti Teknologi MARA",
-            note: "5th Intl. Conf. on Power Engineering Applications · Selangor, Malaysia",
-          },
-          {
-            t: "IBDAP 2025",
-            o: "Big Data Institute (BDI)",
-            note: "6th Intl. Conf. on Big Data Analytics — IEEE · Chiang Mai, Thailand",
-          },
-          {
-            t: "LBTechX1 — Technology Entrepreneurship",
-            o: "HarvardX (Verified Certificate)",
-          },
-          {
-            t: "CalcAPL1x — Calculus Applied!",
-            o: "HarvardX (Verified Certificate)",
-          },
-          {
-            t: "Data Analytics Fundamentals",
-            o: "DataSense Analytics Institute",
-            note: "Professional Training Program",
-          },
-          {
-            t: "Intro to Quantum Natural Language Processing",
-            o: "Quantum Computing Society of the Philippines (QCSP)",
+            label: "Coursework",
+            items: [
+              {
+                title: "LBTechX1 — Technology Entrepreneurship: Lab to Market",
+                issuer: "Harvard University",
+                note: "HarvardX · Verified Certificate",
+                logo: harvardAsset.url,
+                href: "https://courses.edx.org/certificates/b2055fcc49a74683aab10b096758d3e7",
+              },
+              {
+                title: "CalcAPL1x — Calculus Applied!",
+                issuer: "Harvard University",
+                note: "HarvardX · Verified Certificate",
+                logo: harvardAsset.url,
+                href: "https://courses.edx.org/certificates/d0fe4a2f31ec4824ba23a3f22cd3ef20",
+              },
+              {
+                title: "Data Analytics Fundamentals",
+                issuer: "DataSense Analytics Inc.",
+                note: "Professional Training Program",
+                logo: datasenseAsset.url,
+                href: "https://app.datasenseph.com/credential-validation?credentialId=HNRWTN4K05TBH",
+              },
+              {
+                title: "Intro to Quantum Natural Language Processing",
+                issuer: "QCSP",
+                note: "Lecture Series",
+                logo: qcspAsset.url,
+                href: "https://verified.sertifier.com/en/verify/02247570429077/",
+              },
+            ],
           },
         ]}
       />
