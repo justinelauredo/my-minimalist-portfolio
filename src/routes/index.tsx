@@ -873,61 +873,62 @@ function AffiliationsSection() {
         organizations & student leadership
       </h2>
 
-      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="mt-8 space-y-3">
         {affs.map((a) => (
           <a
             key={a.short}
             href={a.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative block overflow-hidden card-soft p-6 transition-all duration-300 hover:-translate-y-1 hover:card-soft-hover"
+            className="group relative block overflow-hidden card-soft p-5 transition-all duration-300 hover:card-soft-hover sm:p-6"
           >
             {/* Background acronym */}
             <span
               aria-hidden="true"
-              className="pointer-events-none absolute -right-4 -bottom-6 display-pixel select-none text-[68px] font-bold uppercase leading-none text-ink opacity-[0.045] transition-opacity duration-300 group-hover:opacity-[0.08]"
+              className="pointer-events-none absolute -right-4 -bottom-6 display-pixel select-none text-[68px] font-bold uppercase leading-none text-ink opacity-[0.045] transition-opacity duration-300 group-hover:opacity-[0.08] sm:text-[84px]"
             >
               {a.short}
             </span>
 
-            <div className="relative flex items-start gap-4">
-              <div className="h-14 w-14 shrink-0 overflow-hidden rounded-full border border-gray-200 bg-background p-1 shadow-[var(--shadow-card)]">
+            <div className="relative flex items-start gap-4 sm:gap-5">
+              <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full border border-gray-200 bg-background p-1 shadow-[var(--shadow-card)] sm:h-14 sm:w-14">
                 <img
                   src={a.logo}
                   alt={`${a.short} logo`}
                   className="h-full w-full rounded-full object-contain"
                 />
               </div>
+
               <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                   <p className="label-mono">{a.short}</p>
                   <p className="font-mono text-[10px] uppercase tracking-widest text-gray-400">
                     {a.span}
                   </p>
                 </div>
-                <h3 className="mt-1 text-[14px] font-medium leading-snug text-ink">
+                <h3 className="mt-1 text-[14px] font-medium leading-snug text-ink sm:text-[15px]">
                   {a.org}
                 </h3>
+
+                <ul className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1">
+                  {a.roles.map((r) => (
+                    <li
+                      key={r.r + r.y}
+                      className="flex items-baseline gap-2 text-[13px] text-gray-700"
+                    >
+                      <span>{r.r}</span>
+                      <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400">
+                        · {r.y}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </div>
+
+              <span className="ml-2 shrink-0 self-center font-mono text-[11px] uppercase tracking-widest text-gray-400 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink">
+                ↗
+              </span>
             </div>
-
-            <ul className="relative mt-4 space-y-1.5">
-              {a.roles.map((r) => (
-                <li
-                  key={r.r + r.y}
-                  className="flex items-baseline justify-between border-t border-gray-200 pt-1.5 text-[13px] text-gray-700"
-                >
-                  <span>{r.r}</span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400">
-                    {r.y}
-                  </span>
-                </li>
-              ))}
-            </ul>
-
-            <p className="relative mt-4 font-mono text-[10px] uppercase tracking-widest text-gray-400 transition-colors group-hover:text-ink">
-              visit page ↗
-            </p>
           </a>
         ))}
       </div>
