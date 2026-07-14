@@ -330,29 +330,32 @@ function AboutSection() {
             researching
           </span>
 
-          <div className="mt-6 flex items-center gap-5 sm:gap-7">
+          <div className="mt-6 flex items-center gap-4 sm:gap-7">
             {/* Portrait */}
             <div className="relative shrink-0">
-              <div className="halftone pointer-events-none absolute -inset-2 -z-10 opacity-40" />
-              <div className="relative h-20 w-20 overflow-hidden rounded-full border border-gray-200 shadow-[var(--shadow-card)] sm:h-24 sm:w-24">
-                <img
-                  src={portraitAsset.url}
-                  alt="Portrait of Justine Lauredo"
-                  className="h-full w-full object-cover"
-                />
-                <span className="absolute -bottom-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full border border-gray-200 bg-background">
-                  <span className="status-dot h-1.5 w-1.5 rounded-full bg-ink" />
-                </span>
+              <div className="halftone pointer-events-none absolute -inset-3 -z-10 opacity-40" />
+              <div className="portrait-frame h-20 w-20 sm:h-24 sm:w-24">
+                <div className="relative h-full w-full overflow-hidden rounded-full border border-gray-200 bg-background">
+                  <img
+                    src={portraitAsset.url}
+                    alt="Portrait of Justine Lauredo"
+                    className="h-full w-full object-cover"
+                  />
+                  <span className="pointer-events-none absolute inset-0 mix-blend-multiply opacity-[0.08] halftone" />
+                </div>
               </div>
+              <span className="absolute -bottom-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full border border-gray-200 bg-background">
+                <span className="status-dot h-1.5 w-1.5 rounded-full bg-ink" />
+              </span>
             </div>
 
-            <h1 className="display-pixel whitespace-nowrap text-[clamp(1.35rem,4vw,2.25rem)] leading-[1.05] text-ink">
+            <h1 className="display-pixel min-w-0 flex-1 text-[clamp(1.25rem,6vw,2.25rem)] leading-[1.05] text-ink">
               Engr. Justine Lauredo,{" "}
               <span className="text-gray-500">ECT</span>
             </h1>
           </div>
 
-          <p className="mt-5 font-jetbrains text-xl text-gray-700">
+          <p className="mt-5 font-jetbrains text-lg text-gray-700 sm:text-xl">
             <Typewriter
               words={[
                 "AI Researcher",
