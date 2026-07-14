@@ -412,7 +412,7 @@ function AboutSection() {
       {/* About */}
       <section className="mt-16 fade-up">
         <SectionHeader num="01" label="about" />
-        <h2 className="display-pixel text-3xl lowercase text-ink">skills & domains</h2>
+        <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">skills & domains</h2>
         <div className="mt-6 space-y-4 text-justify text-[15px] leading-relaxed text-gray-700">
           <p>
             I am a Licensed Electronics Engineer and Electronics Technician working as an
@@ -456,7 +456,7 @@ function AboutSection() {
             { v: "4×", k: "Batch salutatorian" },
           ].map((s, i) => (
             <div key={s.k} className={`p-5 ${i > 0 ? "border-l border-gray-200" : ""}`}>
-              <p className="display-pixel text-3xl lowercase text-ink">{s.v}</p>
+              <p className="display-pixel text-2xl lowercase text-ink sm:text-3xl">{s.v}</p>
               <p className="mt-1 label-mono">{s.k}</p>
             </div>
           ))}
@@ -585,7 +585,7 @@ function ExperienceSection() {
   return (
     <section className="fade-up">
       <SectionHeader num="03" label="experience" />
-      <h2 className="display-pixel text-3xl lowercase text-ink">work experience</h2>
+      <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">work experience</h2>
 
       <div className="mt-8 space-y-6 border-l border-gray-200 pl-6">
         {items.map((x, i) => (
@@ -705,7 +705,7 @@ function ResearchSection() {
   return (
     <section className="fade-up">
       <SectionHeader num="04" label="research & projects" />
-      <h2 className="display-pixel text-3xl lowercase text-ink">
+      <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">
         research and prototypes
       </h2>
       <p className="mt-4 max-w-xl text-justify text-[15px] text-gray-500">
@@ -802,7 +802,7 @@ function PublicationsSection() {
   return (
     <section className="fade-up">
       <SectionHeader num="05" label="publications" />
-      <h2 className="display-pixel text-3xl lowercase text-ink">
+      <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">
         peer-reviewed, ieee-sponsored proceedings
       </h2>
 
@@ -872,7 +872,7 @@ function AffiliationsSection() {
   return (
     <section className="fade-up">
       <SectionHeader num="06" label="affiliations" />
-      <h2 className="display-pixel text-3xl lowercase text-ink">
+      <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">
         organizations & student leadership
       </h2>
 
@@ -969,7 +969,7 @@ function EducationSection() {
   return (
     <section className="fade-up">
       <SectionHeader num="07" label="education" />
-      <h2 className="display-pixel text-3xl lowercase text-ink">educational background</h2>
+      <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">educational background</h2>
 
       <div className="mt-8 space-y-6 border-l border-gray-200 pl-6">
         {items.map((e, i) => (
@@ -1004,7 +1004,7 @@ function GallerySection() {
   return (
     <section className="fade-up">
       <SectionHeader num="08" label="gallery" />
-      <h2 className="display-pixel text-3xl lowercase text-ink">
+      <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">
         photos from conferences, work, and certifications
       </h2>
 
@@ -1037,7 +1037,7 @@ function ContactSection() {
   return (
     <section className="fade-up">
       <SectionHeader num="09" label="contact" />
-      <h2 className="display-pixel text-3xl lowercase leading-tight text-ink">
+      <h2 className="display-pixel text-2xl lowercase leading-tight text-ink sm:text-3xl">
         let's build something that has to work.
       </h2>
       <p className="mt-4 max-w-lg text-justify text-[15px] text-gray-500">
