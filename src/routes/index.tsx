@@ -4,6 +4,12 @@ import portraitAsset from "@/assets/portrait.jpg.asset.json";
 import pupRecAsset from "@/assets/pup-rec.png.asset.json";
 import pupEcessAsset from "@/assets/pup-ecess.png.asset.json";
 import pupAdsAsset from "@/assets/pup-ads.png.asset.json";
+import prcAsset from "@/assets/prc.webp.asset.json";
+import utmAsset from "@/assets/utm.webp.asset.json";
+import bdiAsset from "@/assets/bdi.webp.asset.json";
+import harvardAsset from "@/assets/harvard.png.asset.json";
+import datasenseAsset from "@/assets/datasense.webp.asset.json";
+import qcspAsset from "@/assets/qcsp.webp.asset.json";
 
 /* ---------- Typewriter ---------- */
 function Typewriter({
