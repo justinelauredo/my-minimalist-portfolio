@@ -1110,16 +1110,16 @@ function Portfolio() {
 
       <main className="min-h-0 flex-1 overflow-hidden lg:ml-56 lg:h-screen">
         <div key={active} className="tab-enter h-full overflow-y-auto">
-          <div className="mx-auto max-w-3xl px-4 py-10 sm:px-8 lg:px-12 lg:py-16">
+          <div className="mx-auto max-w-3xl px-4 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-16">
             {renderActive()}
 
-            <footer className="mt-20 border-t border-gray-200 pt-8">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <p className="font-mono text-[11px] uppercase tracking-widest text-gray-500">
-                  © {new Date().getFullYear()} · justine d. lauredo
+            <footer className="mt-16 border-t border-gray-200 pt-6 sm:mt-20 sm:pt-8">
+              <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-3">
+                <p className="font-mono text-[10px] normal-case tracking-wide text-gray-500 sm:text-[11px]">
+                  © {new Date().getFullYear()} Justine D. Lauredo, ECE, ECT · All signals reserved.
                 </p>
-                <p className="font-mono text-[10px] uppercase tracking-widest text-gray-400">
-                  designed in silence · bryl-minimal
+                <p className="font-mono text-[10px] normal-case tracking-wide text-gray-400 sm:text-[11px]">
+                  Muntinlupa, PH · UTC+8 · Inspired by: Bryl Minimal
                 </p>
               </div>
             </footer>
