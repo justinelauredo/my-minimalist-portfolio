@@ -4,6 +4,12 @@ import portraitAsset from "@/assets/portrait.jpg.asset.json";
 import pupRecAsset from "@/assets/pup-rec.png.asset.json";
 import pupEcessAsset from "@/assets/pup-ecess.png.asset.json";
 import pupAdsAsset from "@/assets/pup-ads.png.asset.json";
+import prcAsset from "@/assets/prc.webp.asset.json";
+import utmAsset from "@/assets/utm.webp.asset.json";
+import bdiAsset from "@/assets/bdi.webp.asset.json";
+import harvardAsset from "@/assets/harvard.png.asset.json";
+import datasenseAsset from "@/assets/datasense.webp.asset.json";
+import qcspAsset from "@/assets/qcsp.webp.asset.json";
 
 /* ---------- Typewriter ---------- */
 function Typewriter({
@@ -64,123 +70,64 @@ function Typewriter({
   );
 }
 
-/* ---------- Certification card stack ---------- */
-type Cert = { t: string; o: string; note?: string; featured?: boolean };
+/* ---------- Certification scattered grid (bryl-minimal style) ---------- */
+type CertCard = {
+  title: string;
+  issuer: string;
+  note?: string;
+  href: string;
+  logo: string;
+};
+type CertGroup = { label: string; items: CertCard[] };
 
-function CertStack({ items }: { items: Cert[] }) {
-  const [i, setI] = useState(0);
-  const [leaving, setLeaving] = useState<number | null>(null);
-  const [paused, setPaused] = useState(false);
-  const timer = useRef<number | null>(null);
-
-  const advance = (dir: 1 | -1 = 1) => {
-    if (leaving !== null) return;
-    setLeaving(i);
-    window.setTimeout(() => {
-      setI((v) => (v + dir + items.length) % items.length);
-      setLeaving(null);
-    }, 420);
-  };
-
-  useEffect(() => {
-    if (paused) return;
-    timer.current = window.setTimeout(() => advance(1), 4200);
-    return () => {
-      if (timer.current) window.clearTimeout(timer.current);
-    };
-  }, [i, paused, leaving]);
-
+function CertGrid({ groups }: { groups: CertGroup[] }) {
   return (
-    <div
-      className="mt-8"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
-      <div className="relative h-[240px] sm:h-[220px]">
-        {items.map((c, idx) => {
-          const rel = (idx - i + items.length) % items.length;
-          const isLeaving = leaving === idx;
-          const visible = rel < 3;
-
-          let style: React.CSSProperties;
-          if (isLeaving) {
-            style = {
-              transform: "translate3d(120%, -8px, 0) rotate(5deg)",
-              opacity: 0,
-              zIndex: 60,
-            };
-          } else if (visible) {
-            style = {
-              transform: `translate3d(0, ${rel * 10}px, 0) scale(${1 - rel * 0.04})`,
-              opacity: rel === 0 ? 1 : rel === 1 ? 0.75 : 0.45,
-              zIndex: 50 - rel,
-              pointerEvents: rel === 0 ? "auto" : "none",
-            };
-          } else {
-            style = {
-              transform: "translate3d(0, 30px, 0) scale(0.88)",
-              opacity: 0,
-              zIndex: 0,
-              pointerEvents: "none",
-            };
-          }
-
-          return (
-            <article
-              key={c.t}
-              style={{
-                ...style,
-                transition:
-                  "transform 420ms cubic-bezier(0.16,1,0.3,1), opacity 350ms ease",
-              }}
-              className="card-soft absolute inset-x-0 p-6"
-            >
-              <div className="flex items-start justify-between gap-3">
-                <p className="label-mono">{c.o.split(" — ")[0].split(" (")[0]}</p>
-                {c.featured ? (
-                  <span className="inline-flex items-center rounded-full bg-ink px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-wider text-background">
-                    licensed
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center rounded-full border border-gray-300 px-2 py-0.5 font-mono text-[9px] uppercase tracking-wider text-gray-500">
-                    {String(i + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
-                  </span>
-                )}
-              </div>
-              <h3 className="mt-3 text-[17px] font-medium leading-snug text-ink">
-                {c.t}
-              </h3>
-              <p className="mt-2 text-[13px] text-gray-500">{c.o}</p>
-              {c.note && <p className="mt-1 text-[12px] text-gray-500">{c.note}</p>}
-              <p className="mt-4 font-mono text-[10px] uppercase tracking-widest text-gray-400">
-                ‹ verify ›
-              </p>
-            </article>
-          );
-        })}
-      </div>
-
-      <div className="mt-6 flex items-center justify-between">
-        <p className="label-mono">
-          {String(i + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
-        </p>
-        <div className="flex gap-2">
-          <button
-            onClick={() => advance(-1)}
-            className="rounded-md border border-gray-300 px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest text-ink transition-colors hover:bg-gray-50"
-            aria-label="Previous certification"
-          >
-            ← prev
-          </button>
-          <button
-            onClick={() => advance(1)}
-            className="rounded-md bg-ink px-3 py-1.5 font-mono text-[10px] uppercase tracking-widest text-background transition-opacity hover:opacity-90"
-            aria-label="Next certification"
-          >
-            next →
-          </button>
+    <div className="mt-8 space-y-10 sm:space-y-14">
+      {groups.map((g) => (
+        <div key={g.label}>
+          <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.25em] text-gray-500 sm:mb-5 sm:text-[11px]">
+            {g.label}
+          </p>
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+            {g.items.map((c, idx) => {
+              const rots = [-2, 1.5, -1, 2, -1.8, 1];
+              const rot = rots[idx % rots.length];
+              return (
+                <a
+                  key={c.title}
+                  href={c.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ transform: `rotate(${rot}deg)` }}
+                  className="cert-card group relative flex flex-col items-center justify-between rounded-[14px] border border-gray-200 bg-card p-4 text-center shadow-[var(--shadow-card)] sm:p-5"
+                >
+                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-background sm:h-11 sm:w-11">
+                    <img
+                      src={c.logo}
+                      alt=""
+                      className="max-h-full max-w-full object-contain"
+                    />
+                  </div>
+                  <h3 className="mt-3 text-[12px] font-medium leading-snug text-gray-700 transition-colors group-hover:text-ink sm:mt-4 sm:text-[13px]">
+                    {c.title}
+                  </h3>
+                  <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.18em] text-gray-500 transition-colors group-hover:text-ink sm:text-[10px]">
+                    {c.issuer}
+                  </p>
+                  {c.note && (
+                    <p className="mt-1 line-clamp-2 text-[10px] leading-snug text-gray-500 transition-colors group-hover:text-gray-700 sm:text-[11px]">
+                      {c.note}
+                    </p>
+                  )}
+                  <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.22em] text-gray-400 transition-colors group-hover:text-ink sm:mt-4 sm:text-[10px]">
+                    ‹ verify ›
+                  </p>
+                </a>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      ))}
     </div>
   );
 }
@@ -191,7 +138,7 @@ export const Route = createFileRoute("/")({
 
 const NAV = [
   { id: "about", label: "about", num: "01" },
-  { id: "licenses", label: "licenses", num: "02" },
+  { id: "licenses", label: "licenses & certs", num: "02" },
   { id: "experience", label: "experience", num: "03" },
   { id: "research", label: "research", num: "04" },
   { id: "publications", label: "publications", num: "05" },
@@ -383,29 +330,32 @@ function AboutSection() {
             researching
           </span>
 
-          <div className="mt-6 flex items-center gap-5 sm:gap-7">
+          <div className="mt-6 flex items-center gap-4 sm:gap-7">
             {/* Portrait */}
             <div className="relative shrink-0">
-              <div className="halftone pointer-events-none absolute -inset-2 -z-10 opacity-40" />
-              <div className="relative h-20 w-20 overflow-hidden rounded-full border border-gray-200 shadow-[var(--shadow-card)] sm:h-24 sm:w-24">
-                <img
-                  src={portraitAsset.url}
-                  alt="Portrait of Justine Lauredo"
-                  className="h-full w-full object-cover"
-                />
-                <span className="absolute -bottom-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full border border-gray-200 bg-background">
-                  <span className="status-dot h-1.5 w-1.5 rounded-full bg-ink" />
-                </span>
+              <div className="halftone pointer-events-none absolute -inset-3 -z-10 opacity-40" />
+              <div className="portrait-frame h-20 w-20 sm:h-24 sm:w-24">
+                <div className="relative h-full w-full overflow-hidden rounded-full border border-gray-200 bg-background">
+                  <img
+                    src={portraitAsset.url}
+                    alt="Portrait of Justine Lauredo"
+                    className="h-full w-full object-cover"
+                  />
+                  <span className="pointer-events-none absolute inset-0 mix-blend-multiply opacity-[0.08] halftone" />
+                </div>
               </div>
+              <span className="absolute -bottom-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full border border-gray-200 bg-background">
+                <span className="status-dot h-1.5 w-1.5 rounded-full bg-ink" />
+              </span>
             </div>
 
-            <h1 className="display-pixel whitespace-nowrap text-[clamp(1.35rem,4vw,2.25rem)] leading-[1.05] text-ink">
+            <h1 className="display-pixel min-w-0 flex-1 text-[clamp(1.25rem,6vw,2.25rem)] leading-[1.05] text-ink">
               Engr. Justine Lauredo,{" "}
               <span className="text-gray-500">ECT</span>
             </h1>
           </div>
 
-          <p className="mt-5 font-jetbrains text-xl text-gray-700">
+          <p className="mt-5 font-jetbrains text-lg text-gray-700 sm:text-xl">
             <Typewriter
               words={[
                 "AI Researcher",
@@ -462,7 +412,7 @@ function AboutSection() {
       {/* About */}
       <section className="mt-16 fade-up">
         <SectionHeader num="01" label="about" />
-        <h2 className="display-pixel text-3xl lowercase text-ink">skills & domains</h2>
+        <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">skills & domains</h2>
         <div className="mt-6 space-y-4 text-justify text-[15px] leading-relaxed text-gray-700">
           <p>
             I am a Licensed Electronics Engineer and Electronics Technician working as an
@@ -506,7 +456,7 @@ function AboutSection() {
             { v: "4×", k: "Batch salutatorian" },
           ].map((s, i) => (
             <div key={s.k} className={`p-5 ${i > 0 ? "border-l border-gray-200" : ""}`}>
-              <p className="display-pixel text-3xl lowercase text-ink">{s.v}</p>
+              <p className="display-pixel text-2xl lowercase text-ink sm:text-3xl">{s.v}</p>
               <p className="mt-1 label-mono">{s.k}</p>
             </div>
           ))}
@@ -520,51 +470,83 @@ function LicensesSection() {
   return (
     <section className="fade-up">
       <SectionHeader num="02" label="licenses & certifications" />
-      <h2 className="display-pixel text-3xl lowercase text-ink">
+      <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">
         <Typewriter words={["credentials", "conferences", "coursework"]} />
       </h2>
-      <p className="mt-3 max-w-xl text-justify text-[14px] text-gray-500">
-        A stack of licenses, IEEE presentations, and verified coursework — click through,
-        or let it cycle.
+      <p className="mt-3 max-w-xl text-justify text-[13px] text-gray-500 sm:text-[14px]">
+        Licenses, IEEE conference presentations, and verified coursework — every card
+        links to its issuer for verification.
       </p>
-      <CertStack
-        items={[
+      <CertGrid
+        groups={[
           {
-            t: "Licensed Electronics Engineer (ECE)",
-            o: "Professional Regulation Commission — Philippines",
-            featured: true,
+            label: "Licensure",
+            items: [
+              {
+                title: "Licensed Electronics Engineer (ECE)",
+                issuer: "PRC — Philippines",
+                logo: prcAsset.url,
+                href: "https://www.prcboard.com/eele-results-march-2026-electronics-engineering-licensure-exam-list-of-passers",
+              },
+              {
+                title: "Licensed Electronics Technician (ECT)",
+                issuer: "PRC — Philippines",
+                logo: prcAsset.url,
+                href: "https://www.prcboard.com/etle-results-march-2026-electronics-technician-licensure-exam-list-of-passers",
+              },
+            ],
           },
           {
-            t: "Licensed Electronics Technician (ECT)",
-            o: "Professional Regulation Commission — Philippines",
-            featured: true,
+            label: "Conferences",
+            items: [
+              {
+                title: "IEEE ICPEA 2025 — Research Presenter",
+                issuer: "Universiti Teknologi MARA",
+                note: "5th Intl. Conf. on Power Engineering Applications · Selangor, MY",
+                logo: utmAsset.url,
+                href: "https://drive.google.com/file/d/1kLrObFTL0J4BHw-A5rLcCgLZ09k6cgoz/view?usp=sharing",
+              },
+              {
+                title: "IBDAP 2025",
+                issuer: "Big Data Institute (BDI)",
+                note: "6th Intl. Conf. on Big Data Analytics · Chiang Mai, TH",
+                logo: bdiAsset.url,
+                href: "https://drive.google.com/file/d/1kAwH-8RJSuf0ljkFCpRxZF-soMZ7ZWaH/view?usp=sharing",
+              },
+            ],
           },
           {
-            t: "IEEE ICPEA 2025 — Research Presenter",
-            o: "Universiti Teknologi MARA",
-            note: "5th Intl. Conf. on Power Engineering Applications · Selangor, Malaysia",
-          },
-          {
-            t: "IBDAP 2025",
-            o: "Big Data Institute (BDI)",
-            note: "6th Intl. Conf. on Big Data Analytics — IEEE · Chiang Mai, Thailand",
-          },
-          {
-            t: "LBTechX1 — Technology Entrepreneurship",
-            o: "HarvardX (Verified Certificate)",
-          },
-          {
-            t: "CalcAPL1x — Calculus Applied!",
-            o: "HarvardX (Verified Certificate)",
-          },
-          {
-            t: "Data Analytics Fundamentals",
-            o: "DataSense Analytics Institute",
-            note: "Professional Training Program",
-          },
-          {
-            t: "Intro to Quantum Natural Language Processing",
-            o: "Quantum Computing Society of the Philippines (QCSP)",
+            label: "Coursework",
+            items: [
+              {
+                title: "LBTechX1 — Technology Entrepreneurship: Lab to Market",
+                issuer: "Harvard University",
+                note: "HarvardX · Verified Certificate",
+                logo: harvardAsset.url,
+                href: "https://courses.edx.org/certificates/b2055fcc49a74683aab10b096758d3e7",
+              },
+              {
+                title: "CalcAPL1x — Calculus Applied!",
+                issuer: "Harvard University",
+                note: "HarvardX · Verified Certificate",
+                logo: harvardAsset.url,
+                href: "https://courses.edx.org/certificates/d0fe4a2f31ec4824ba23a3f22cd3ef20",
+              },
+              {
+                title: "Data Analytics Fundamentals",
+                issuer: "DataSense Analytics Inc.",
+                note: "Professional Training Program",
+                logo: datasenseAsset.url,
+                href: "https://app.datasenseph.com/credential-validation?credentialId=HNRWTN4K05TBH",
+              },
+              {
+                title: "Intro to Quantum Natural Language Processing",
+                issuer: "QCSP",
+                note: "Lecture Series",
+                logo: qcspAsset.url,
+                href: "https://verified.sertifier.com/en/verify/02247570429077/",
+              },
+            ],
           },
         ]}
       />
@@ -603,7 +585,7 @@ function ExperienceSection() {
   return (
     <section className="fade-up">
       <SectionHeader num="03" label="experience" />
-      <h2 className="display-pixel text-3xl lowercase text-ink">work experience</h2>
+      <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">work experience</h2>
 
       <div className="mt-8 space-y-6 border-l border-gray-200 pl-6">
         {items.map((x, i) => (
@@ -723,7 +705,7 @@ function ResearchSection() {
   return (
     <section className="fade-up">
       <SectionHeader num="04" label="research & projects" />
-      <h2 className="display-pixel text-3xl lowercase text-ink">
+      <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">
         research and prototypes
       </h2>
       <p className="mt-4 max-w-xl text-justify text-[15px] text-gray-500">
@@ -820,7 +802,7 @@ function PublicationsSection() {
   return (
     <section className="fade-up">
       <SectionHeader num="05" label="publications" />
-      <h2 className="display-pixel text-3xl lowercase text-ink">
+      <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">
         peer-reviewed, ieee-sponsored proceedings
       </h2>
 
@@ -890,65 +872,66 @@ function AffiliationsSection() {
   return (
     <section className="fade-up">
       <SectionHeader num="06" label="affiliations" />
-      <h2 className="display-pixel text-3xl lowercase text-ink">
+      <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">
         organizations & student leadership
       </h2>
 
-      <div className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="mt-8 space-y-3">
         {affs.map((a) => (
           <a
             key={a.short}
             href={a.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative block overflow-hidden card-soft p-6 transition-all duration-300 hover:-translate-y-1 hover:card-soft-hover"
+            className="group relative block overflow-hidden card-soft p-5 transition-all duration-300 hover:card-soft-hover sm:p-6"
           >
             {/* Background acronym */}
             <span
               aria-hidden="true"
-              className="pointer-events-none absolute -right-4 -bottom-6 display-pixel select-none text-[68px] font-bold uppercase leading-none text-ink opacity-[0.045] transition-opacity duration-300 group-hover:opacity-[0.08]"
+              className="pointer-events-none absolute -right-4 -bottom-6 display-pixel select-none text-[68px] font-bold uppercase leading-none text-ink opacity-[0.045] transition-opacity duration-300 group-hover:opacity-[0.08] sm:text-[84px]"
             >
               {a.short}
             </span>
 
-            <div className="relative flex items-start gap-4">
-              <div className="h-14 w-14 shrink-0 overflow-hidden rounded-full border border-gray-200 bg-background p-1 shadow-[var(--shadow-card)]">
+            <div className="relative flex items-start gap-4 sm:gap-5">
+              <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full border border-gray-200 bg-background p-1 shadow-[var(--shadow-card)] sm:h-14 sm:w-14">
                 <img
                   src={a.logo}
                   alt={`${a.short} logo`}
                   className="h-full w-full rounded-full object-contain"
                 />
               </div>
+
               <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                   <p className="label-mono">{a.short}</p>
                   <p className="font-mono text-[10px] uppercase tracking-widest text-gray-400">
                     {a.span}
                   </p>
                 </div>
-                <h3 className="mt-1 text-[14px] font-medium leading-snug text-ink">
+                <h3 className="mt-1 text-[14px] font-medium leading-snug text-ink sm:text-[15px]">
                   {a.org}
                 </h3>
+
+                <ul className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1">
+                  {a.roles.map((r) => (
+                    <li
+                      key={r.r + r.y}
+                      className="flex items-baseline gap-2 text-[13px] text-gray-700"
+                    >
+                      <span>{r.r}</span>
+                      <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400">
+                        · {r.y}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </div>
+
+              <span className="ml-2 shrink-0 self-center font-mono text-[11px] uppercase tracking-widest text-gray-400 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-ink">
+                ↗
+              </span>
             </div>
-
-            <ul className="relative mt-4 space-y-1.5">
-              {a.roles.map((r) => (
-                <li
-                  key={r.r + r.y}
-                  className="flex items-baseline justify-between border-t border-gray-200 pt-1.5 text-[13px] text-gray-700"
-                >
-                  <span>{r.r}</span>
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-gray-400">
-                    {r.y}
-                  </span>
-                </li>
-              ))}
-            </ul>
-
-            <p className="relative mt-4 font-mono text-[10px] uppercase tracking-widest text-gray-400 transition-colors group-hover:text-ink">
-              visit page ↗
-            </p>
           </a>
         ))}
       </div>
@@ -986,7 +969,7 @@ function EducationSection() {
   return (
     <section className="fade-up">
       <SectionHeader num="07" label="education" />
-      <h2 className="display-pixel text-3xl lowercase text-ink">educational background</h2>
+      <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">educational background</h2>
 
       <div className="mt-8 space-y-6 border-l border-gray-200 pl-6">
         {items.map((e, i) => (
@@ -1021,7 +1004,7 @@ function GallerySection() {
   return (
     <section className="fade-up">
       <SectionHeader num="08" label="gallery" />
-      <h2 className="display-pixel text-3xl lowercase text-ink">
+      <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">
         photos from conferences, work, and certifications
       </h2>
 
@@ -1054,7 +1037,7 @@ function ContactSection() {
   return (
     <section className="fade-up">
       <SectionHeader num="09" label="contact" />
-      <h2 className="display-pixel text-3xl lowercase leading-tight text-ink">
+      <h2 className="display-pixel text-2xl lowercase leading-tight text-ink sm:text-3xl">
         let's build something that has to work.
       </h2>
       <p className="mt-4 max-w-lg text-justify text-[15px] text-gray-500">
@@ -1130,16 +1113,16 @@ function Portfolio() {
 
       <main className="min-h-0 flex-1 overflow-hidden lg:ml-56 lg:h-screen">
         <div key={active} className="tab-enter h-full overflow-y-auto">
-          <div className="mx-auto max-w-3xl px-4 py-10 sm:px-8 lg:px-12 lg:py-16">
+          <div className="mx-auto max-w-3xl px-4 py-8 sm:px-8 sm:py-10 lg:px-12 lg:py-16">
             {renderActive()}
 
-            <footer className="mt-20 border-t border-gray-200 pt-8">
-              <div className="flex flex-wrap items-center justify-between gap-3">
-                <p className="font-mono text-[11px] uppercase tracking-widest text-gray-500">
-                  © {new Date().getFullYear()} · justine d. lauredo
+            <footer className="mt-16 border-t border-gray-200 pt-6 sm:mt-20 sm:pt-8">
+              <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-3">
+                <p className="font-mono text-[10px] normal-case tracking-wide text-gray-500 sm:text-[11px]">
+                  © {new Date().getFullYear()} Justine D. Lauredo, ECE, ECT · All signals reserved.
                 </p>
-                <p className="font-mono text-[10px] uppercase tracking-widest text-gray-400">
-                  designed in silence · bryl-minimal
+                <p className="font-mono text-[10px] normal-case tracking-wide text-gray-400 sm:text-[11px]">
+                  Muntinlupa, PH · UTC+8 · Inspired by: Bryl Minimal
                 </p>
               </div>
             </footer>
