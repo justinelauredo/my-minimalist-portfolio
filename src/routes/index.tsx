@@ -80,7 +80,23 @@ type CertCard = {
 };
 type CertGroup = { label: string; items: CertCard[] };
 
+const VerifySwirl = () => (
+  <svg viewBox="0 0 13 22" fill="currentColor" aria-hidden="true" className="h-[14px] w-auto shrink-0">
+    <path d="M0 -4C2.1 -2.6 2.1 2.6 0 4C-2.1 2.6 -2.1 -2.6 0 -4Z" transform="translate(8 5) rotate(46)" />
+    <path d="M0 -4.3C2.3 -2.8 2.3 2.8 0 4.3C-2.3 2.8 -2.3 -2.8 0 -4.3Z" transform="translate(4.6 11) rotate(14)" />
+    <path d="M0 -4C2.1 -2.6 2.1 2.6 0 4C-2.1 2.6 -2.1 -2.6 0 -4Z" transform="translate(8 17) rotate(-30)" />
+  </svg>
+);
+
 function CertGrid({ groups }: { groups: CertGroup[] }) {
+  const rots: Array<{ rot: string; ty: string }> = [
+    { rot: "-2deg", ty: "3px" },
+    { rot: "1.5deg", ty: "-2px" },
+    { rot: "-1deg", ty: "4px" },
+    { rot: "2deg", ty: "-3px" },
+    { rot: "-1.8deg", ty: "2px" },
+    { rot: "1.2deg", ty: "-1px" },
+  ];
   return (
     <div className="mt-8 space-y-10 sm:space-y-14">
       {groups.map((g) => (
@@ -88,40 +104,47 @@ function CertGrid({ groups }: { groups: CertGroup[] }) {
           <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.25em] text-gray-500 sm:mb-5 sm:text-[11px]">
             {g.label}
           </p>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+          <div className="flex flex-wrap justify-center gap-y-2 -m-1.5 sm:justify-start">
             {g.items.map((c, idx) => {
-              const rots = [-2, 1.5, -1, 2, -1.8, 1];
-              const rot = rots[idx % rots.length];
+              const v = rots[idx % rots.length];
               return (
                 <a
                   key={c.title}
                   href={c.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ transform: `rotate(${rot}deg)` }}
-                  className="cert-card group relative flex flex-col items-center justify-between rounded-[14px] border border-gray-200 bg-card p-4 text-center shadow-[var(--shadow-card)] sm:p-5"
+                  style={{ ["--rot" as string]: v.rot, ["--ty" as string]: v.ty }}
+                  className="cert-card group relative -m-1.5 flex flex-col items-center rounded-xl bg-gradient-to-b from-gray-50 to-white px-3.5 py-5 text-center dark:from-gray-100 dark:to-gray-50"
                 >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-background sm:h-11 sm:w-11">
-                    <img
-                      src={c.logo}
-                      alt=""
-                      className="max-h-full max-w-full object-contain"
-                    />
-                  </div>
-                  <h3 className="mt-3 text-[12px] font-medium leading-snug text-gray-700 transition-colors group-hover:text-ink sm:mt-4 sm:text-[13px]">
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-[6px] rounded-lg border border-gray-200/80 group-hover:border-gray-300"
+                  />
+                  <img
+                    src={c.logo}
+                    alt={`${c.issuer} logo`}
+                    className="relative h-9 w-9 rounded-md border border-gray-200 bg-white object-contain p-1"
+                  />
+                  <h3 className="relative mt-3 text-[13px] font-semibold leading-snug text-ink">
                     {c.title}
                   </h3>
-                  <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.18em] text-gray-500 transition-colors group-hover:text-ink sm:text-[10px]">
+                  <p className="relative mt-1 font-mono text-[9.5px] uppercase tracking-wider text-gray-400">
                     {c.issuer}
                   </p>
                   {c.note && (
-                    <p className="mt-1 line-clamp-2 text-[10px] leading-snug text-gray-500 transition-colors group-hover:text-gray-700 sm:text-[11px]">
+                    <p className="relative mt-1 line-clamp-2 text-[10px] leading-snug text-gray-500">
                       {c.note}
                     </p>
                   )}
-                  <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.22em] text-gray-400 transition-colors group-hover:text-ink sm:mt-4 sm:text-[10px]">
-                    ‹ verify ›
-                  </p>
+                  <div className="relative mt-auto flex items-center gap-1.5 pt-3 text-gray-300 group-hover:text-ink">
+                    <VerifySwirl />
+                    <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-gray-400 group-hover:text-ink">
+                      Verify
+                    </span>
+                    <span className="inline-flex -scale-x-100">
+                      <VerifySwirl />
+                    </span>
+                  </div>
                 </a>
               );
             })}
@@ -131,6 +154,7 @@ function CertGrid({ groups }: { groups: CertGroup[] }) {
     </div>
   );
 }
+
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
