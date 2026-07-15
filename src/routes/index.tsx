@@ -349,10 +349,10 @@ function AboutSection() {
               </span>
             </div>
 
-            <h1 className="display-pixel min-w-0 flex-1 text-[clamp(1.25rem,6vw,2.25rem)] leading-[1.05] text-ink">
-              Engr. Justine Lauredo,{" "}
-              <span className="text-gray-500">ECT</span>
+            <h1 className="display-pixel min-w-0 flex-1 whitespace-nowrap text-[clamp(0.95rem,4.6vw,1.9rem)] leading-[1.05] tracking-tight text-ink">
+              Engr. Justine Lauredo, <span className="text-gray-500">ECT</span>
             </h1>
+
           </div>
 
           <p className="mt-5 font-jetbrains text-lg text-gray-700 sm:text-xl">
