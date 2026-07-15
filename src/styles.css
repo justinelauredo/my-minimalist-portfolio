@@ -252,7 +252,7 @@
 }
 .edu-dot-pulse { animation: edu-pulse-ring 2.4s ease-out infinite; }
 
-}
+
 
 @utility portrait-frame {
   position: relative;
