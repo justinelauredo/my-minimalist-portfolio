@@ -421,7 +421,7 @@ function AboutSection() {
         <SectionHeader num="01" label="about" />
         <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">skills & domains</h2>
 
-        <div className="mt-6 grid gap-8 sm:grid-cols-[1fr_220px] sm:items-start">
+        <div className="mt-6 grid gap-8 sm:grid-cols-[220px_1fr] sm:items-start">
           <div className="space-y-4 text-justify text-[15px] leading-relaxed text-gray-700">
             <p>
               I am a Licensed Electronics Engineer and Electronics Technician working as an
