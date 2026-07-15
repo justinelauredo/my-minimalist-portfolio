@@ -114,37 +114,38 @@ function CertGrid({ groups }: { groups: CertGroup[] }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ ["--rot" as string]: v.rot, ["--ty" as string]: v.ty }}
-                  className="cert-card group relative -m-1.5 flex flex-col items-center rounded-xl bg-gradient-to-b from-gray-50 to-white px-3.5 py-5 text-center dark:from-gray-100 dark:to-gray-50"
+                  className="cert-card group relative -m-1.5 flex flex-col items-center rounded-xl bg-gradient-to-b from-gray-900 to-black px-3.5 py-5 text-center"
                 >
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute inset-[6px] rounded-lg border border-gray-200/80 group-hover:border-gray-300"
+                    className="pointer-events-none absolute inset-[6px] rounded-lg border border-white/10 group-hover:border-white/20"
                   />
                   <img
                     src={c.logo}
                     alt={`${c.issuer} logo`}
-                    className="relative h-9 w-9 rounded-md border border-gray-200 bg-white object-contain p-1"
+                    className="relative h-9 w-9 rounded-md border border-white/10 bg-white object-contain p-1 dark:bg-black"
                   />
-                  <h3 className="relative mt-3 text-[13px] font-semibold leading-snug text-ink">
+                  <h3 className="relative mt-3 text-[13px] font-semibold leading-snug text-white">
                     {c.title}
                   </h3>
                   <p className="relative mt-1 font-mono text-[9.5px] uppercase tracking-wider text-gray-400">
                     {c.issuer}
                   </p>
                   {c.note && (
-                    <p className="relative mt-1 line-clamp-2 text-[10px] leading-snug text-gray-500">
+                    <p className="relative mt-1 line-clamp-2 text-[10px] leading-snug text-gray-300">
                       {c.note}
                     </p>
                   )}
-                  <div className="relative mt-auto flex items-center gap-1.5 pt-3 text-gray-300 group-hover:text-ink">
+                  <div className="relative mt-auto flex items-center gap-1.5 pt-3 text-gray-500 group-hover:text-white">
                     <VerifySwirl />
-                    <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-gray-400 group-hover:text-ink">
+                    <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-gray-400 group-hover:text-white">
                       Verify
                     </span>
                     <span className="inline-flex -scale-x-100">
                       <VerifySwirl />
                     </span>
                   </div>
+
                 </a>
               );
             })}
