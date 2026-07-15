@@ -422,26 +422,6 @@ function AboutSection() {
         <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">skills & domains</h2>
 
         <div className="mt-6 grid gap-8 sm:grid-cols-[220px_1fr] sm:items-start">
-          <div className="space-y-4 text-justify text-[15px] leading-relaxed text-gray-700">
-            <p>
-              I am a Licensed Electronics Engineer and Electronics Technician working as an
-              AI Researcher. My work sits at the intersection of hardware circuits, embedded
-              systems, and applied intelligence.
-            </p>
-            <p>
-              I have a growing foundation in Artificial Intelligence, IoT, and
-              renewable-energy systems, including machine-learning models and GIS-based
-              solar simulations I've presented at IEEE-sponsored international conferences
-              in Malaysia and Thailand.
-            </p>
-            <p>
-              I'm comfortable moving between artificial intelligence, software, 3D
-              modelling, embedded prototyping, and data analytics — and dedicated to
-              refining my engineering expertise through hands-on experience and structured
-              mentorship.
-            </p>
-          </div>
-
           {/* Creative portrait */}
           <figure className="group relative mx-auto w-full max-w-[220px] sm:mx-0">
             <span aria-hidden="true" className="halftone pointer-events-none absolute -inset-4 -z-10 opacity-60" />
@@ -466,6 +446,27 @@ function AboutSection() {
               /portrait — muntinlupa, ph
             </span>
           </figure>
+
+          <div className="space-y-4 text-justify text-[15px] leading-relaxed text-gray-700">
+            <p>
+              I am a Licensed Electronics Engineer and Electronics Technician working as an
+              AI Researcher. My work sits at the intersection of hardware circuits, embedded
+              systems, and applied intelligence.
+            </p>
+            <p>
+              I have a growing foundation in Artificial Intelligence, IoT, and
+              renewable-energy systems, including machine-learning models and GIS-based
+              solar simulations I've presented at IEEE-sponsored international conferences
+              in Malaysia and Thailand.
+            </p>
+            <p>
+              I'm comfortable moving between artificial intelligence, software, 3D
+              modelling, embedded prototyping, and data analytics — and dedicated to
+              refining my engineering expertise through hands-on experience and structured
+              mentorship.
+            </p>
+          </div>
+
         </div>
 
 
