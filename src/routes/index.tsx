@@ -114,37 +114,38 @@ function CertGrid({ groups }: { groups: CertGroup[] }) {
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ ["--rot" as string]: v.rot, ["--ty" as string]: v.ty }}
-                  className="cert-card group relative -m-1.5 flex flex-col items-center rounded-xl bg-gradient-to-b from-gray-50 to-white px-3.5 py-5 text-center dark:from-gray-100 dark:to-gray-50"
+                  className="cert-card group relative -m-1.5 flex flex-col items-center rounded-xl bg-gradient-to-b from-gray-900 to-black px-3.5 py-5 text-center"
                 >
                   <span
                     aria-hidden="true"
-                    className="pointer-events-none absolute inset-[6px] rounded-lg border border-gray-200/80 group-hover:border-gray-300"
+                    className="pointer-events-none absolute inset-[6px] rounded-lg border border-white/10 group-hover:border-white/20"
                   />
                   <img
                     src={c.logo}
                     alt={`${c.issuer} logo`}
-                    className="relative h-9 w-9 rounded-md border border-gray-200 bg-white object-contain p-1"
+                    className="relative h-9 w-9 rounded-md border border-white/10 bg-white object-contain p-1 dark:bg-black"
                   />
-                  <h3 className="relative mt-3 text-[13px] font-semibold leading-snug text-ink">
+                  <h3 className="relative mt-3 text-[13px] font-semibold leading-snug text-white">
                     {c.title}
                   </h3>
                   <p className="relative mt-1 font-mono text-[9.5px] uppercase tracking-wider text-gray-400">
                     {c.issuer}
                   </p>
                   {c.note && (
-                    <p className="relative mt-1 line-clamp-2 text-[10px] leading-snug text-gray-500">
+                    <p className="relative mt-1 line-clamp-2 text-[10px] leading-snug text-gray-300">
                       {c.note}
                     </p>
                   )}
-                  <div className="relative mt-auto flex items-center gap-1.5 pt-3 text-gray-300 group-hover:text-ink">
+                  <div className="relative mt-auto flex items-center gap-1.5 pt-3 text-gray-500 group-hover:text-white">
                     <VerifySwirl />
-                    <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-gray-400 group-hover:text-ink">
+                    <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-gray-400 group-hover:text-white">
                       Verify
                     </span>
                     <span className="inline-flex -scale-x-100">
                       <VerifySwirl />
                     </span>
                   </div>
+
                 </a>
               );
             })}
@@ -355,29 +356,12 @@ function AboutSection() {
           </span>
 
           <div className="mt-6 flex items-center gap-4 sm:gap-7">
-            {/* Portrait */}
-            <div className="relative shrink-0">
-              <div className="halftone pointer-events-none absolute -inset-3 -z-10 opacity-40" />
-              <div className="portrait-frame h-20 w-20 sm:h-24 sm:w-24">
-                <div className="relative h-full w-full overflow-hidden rounded-full border border-gray-200 bg-background">
-                  <img
-                    src={portraitAsset.url}
-                    alt="Portrait of Justine Lauredo"
-                    className="h-full w-full object-cover"
-                  />
-                  <span className="pointer-events-none absolute inset-0 mix-blend-multiply opacity-[0.08] halftone" />
-                </div>
-              </div>
-              <span className="absolute -bottom-0.5 -right-0.5 flex h-4 w-4 items-center justify-center rounded-full border border-gray-200 bg-background">
-                <span className="status-dot h-1.5 w-1.5 rounded-full bg-ink" />
-              </span>
-            </div>
-
             <h1 className="display-pixel min-w-0 flex-1 whitespace-nowrap text-[clamp(0.95rem,4.6vw,1.9rem)] leading-[1.05] tracking-tight text-ink">
               Engr. Justine Lauredo, <span className="text-gray-500">ECT</span>
             </h1>
 
           </div>
+
 
           <p className="mt-5 font-jetbrains text-lg text-gray-700 sm:text-xl">
             <Typewriter
@@ -438,27 +422,7 @@ function AboutSection() {
         <SectionHeader num="01" label="about" />
         <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">skills & domains</h2>
 
-        <div className="mt-6 grid gap-8 sm:grid-cols-[1fr_220px] sm:items-start">
-          <div className="space-y-4 text-justify text-[15px] leading-relaxed text-gray-700">
-            <p>
-              I am a Licensed Electronics Engineer and Electronics Technician working as an
-              AI Researcher. My work sits at the intersection of hardware circuits, embedded
-              systems, and applied intelligence.
-            </p>
-            <p>
-              I have a growing foundation in Artificial Intelligence, IoT, and
-              renewable-energy systems, including machine-learning models and GIS-based
-              solar simulations I've presented at IEEE-sponsored international conferences
-              in Malaysia and Thailand.
-            </p>
-            <p>
-              I'm comfortable moving between artificial intelligence, software, 3D
-              modelling, embedded prototyping, and data analytics — and dedicated to
-              refining my engineering expertise through hands-on experience and structured
-              mentorship.
-            </p>
-          </div>
-
+        <div className="mt-6 grid gap-8 sm:grid-cols-[220px_1fr] sm:items-start">
           {/* Creative portrait */}
           <figure className="group relative mx-auto w-full max-w-[220px] sm:mx-0">
             <span aria-hidden="true" className="halftone pointer-events-none absolute -inset-4 -z-10 opacity-60" />
@@ -483,6 +447,27 @@ function AboutSection() {
               /portrait — muntinlupa, ph
             </span>
           </figure>
+
+          <div className="space-y-4 text-justify text-[15px] leading-relaxed text-gray-700">
+            <p>
+              I am a Licensed Electronics Engineer and Electronics Technician working as an
+              AI Researcher. My work sits at the intersection of hardware circuits, embedded
+              systems, and applied intelligence.
+            </p>
+            <p>
+              I have a growing foundation in Artificial Intelligence, IoT, and
+              renewable-energy systems, including machine-learning models and GIS-based
+              solar simulations I've presented at IEEE-sponsored international conferences
+              in Malaysia and Thailand.
+            </p>
+            <p>
+              I'm comfortable moving between artificial intelligence, software, 3D
+              modelling, embedded prototyping, and data analytics — and dedicated to
+              refining my engineering expertise through hands-on experience and structured
+              mentorship.
+            </p>
+          </div>
+
         </div>
 
 
