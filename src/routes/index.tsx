@@ -1024,15 +1024,17 @@ function EducationSection() {
       <SectionHeader num="07" label="education" />
       <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">educational background</h2>
 
-      <div className="mt-8 space-y-6 border-l border-gray-200 pl-6">
+      <div className="relative mt-8 space-y-6 pl-6">
+        <span aria-hidden="true" className="edu-line absolute left-0 top-0 h-full w-px bg-gradient-to-b from-ink/60 via-gray-300 to-transparent" />
         {items.map((e, i) => (
           <div
             key={e.school}
-            className="relative tab-enter"
-            style={{ animationDelay: `${i * 80}ms` }}
+            className="group relative tab-enter"
+            style={{ animationDelay: `${i * 90}ms` }}
           >
-            <span className="absolute -left-[29px] top-1.5 h-2 w-2 rounded-full border border-gray-300 bg-background" />
-            <div className="card-soft p-6">
+            <span className="edu-dot-pulse absolute -left-[29px] top-3 h-2.5 w-2.5 rounded-full border border-gray-300 bg-background transition-all duration-300 group-hover:scale-125 group-hover:border-ink group-hover:bg-ink" />
+            <span aria-hidden="true" className="absolute -left-[22px] top-4 h-px w-4 origin-left scale-x-0 bg-ink transition-transform duration-500 group-hover:scale-x-100" />
+            <div className="card-soft p-6 transition-all duration-500 group-hover:card-soft-hover group-hover:translate-x-1">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <p className="label-mono">{e.when}</p>
                 <p className="font-mono text-[11px] text-gray-500">{e.degree}</p>
@@ -1043,6 +1045,7 @@ function EducationSection() {
           </div>
         ))}
       </div>
+
     </section>
   );
 }
