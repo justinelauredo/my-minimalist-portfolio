@@ -413,25 +413,54 @@ function AboutSection() {
       <section className="mt-16 fade-up">
         <SectionHeader num="01" label="about" />
         <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">skills & domains</h2>
-        <div className="mt-6 space-y-4 text-justify text-[15px] leading-relaxed text-gray-700">
-          <p>
-            I am a Licensed Electronics Engineer and Electronics Technician working as an
-            AI Researcher. My work sits at the intersection of hardware circuits, embedded
-            systems, and applied intelligence.
-          </p>
-          <p>
-            I have a growing foundation in Artificial Intelligence, IoT, and
-            renewable-energy systems, including machine-learning models and GIS-based
-            solar simulations I've presented at IEEE-sponsored international conferences
-            in Malaysia and Thailand.
-          </p>
-          <p>
-            I'm comfortable moving between artificial intelligence, software, 3D
-            modelling, embedded prototyping, and data analytics — and dedicated to
-            refining my engineering expertise through hands-on experience and structured
-            mentorship.
-          </p>
+
+        <div className="mt-6 grid gap-8 sm:grid-cols-[1fr_220px] sm:items-start">
+          <div className="space-y-4 text-justify text-[15px] leading-relaxed text-gray-700">
+            <p>
+              I am a Licensed Electronics Engineer and Electronics Technician working as an
+              AI Researcher. My work sits at the intersection of hardware circuits, embedded
+              systems, and applied intelligence.
+            </p>
+            <p>
+              I have a growing foundation in Artificial Intelligence, IoT, and
+              renewable-energy systems, including machine-learning models and GIS-based
+              solar simulations I've presented at IEEE-sponsored international conferences
+              in Malaysia and Thailand.
+            </p>
+            <p>
+              I'm comfortable moving between artificial intelligence, software, 3D
+              modelling, embedded prototyping, and data analytics — and dedicated to
+              refining my engineering expertise through hands-on experience and structured
+              mentorship.
+            </p>
+          </div>
+
+          {/* Creative portrait */}
+          <figure className="group relative mx-auto w-full max-w-[220px] sm:mx-0">
+            <span aria-hidden="true" className="halftone pointer-events-none absolute -inset-4 -z-10 opacity-60" />
+            <span aria-hidden="true" className="pointer-events-none absolute -left-3 -top-3 h-16 w-16 rounded-md border border-ink/70" />
+            <span aria-hidden="true" className="pointer-events-none absolute -bottom-3 -right-3 h-16 w-16 rounded-md border border-ink/70" />
+            <div className="relative overflow-hidden rounded-lg border border-gray-200 bg-background shadow-[var(--shadow-card)] transition-transform duration-500 group-hover:-translate-y-1">
+              <div className="relative aspect-[4/5]">
+                <img
+                  src={portraitAsset.url}
+                  alt="Portrait of Justine Lauredo"
+                  className="h-full w-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0"
+                />
+                <span className="pointer-events-none absolute inset-0 mix-blend-multiply opacity-20 halftone" />
+                <span className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-background/70 to-transparent" />
+              </div>
+              <figcaption className="flex items-center justify-between border-t border-gray-200 px-3 py-2">
+                <span className="font-mono text-[9px] uppercase tracking-widest text-gray-500">jdl · 2026</span>
+                <span className="status-dot inline-block h-1.5 w-1.5 rounded-full bg-ink" />
+              </figcaption>
+            </div>
+            <span aria-hidden="true" className="pointer-events-none absolute -bottom-6 left-1 font-mono text-[9px] uppercase tracking-[0.3em] text-gray-400">
+              /portrait — muntinlupa, ph
+            </span>
+          </figure>
         </div>
+
 
         <div className="mt-8 flex flex-wrap gap-1.5">
           {[
