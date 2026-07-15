@@ -80,7 +80,23 @@ type CertCard = {
 };
 type CertGroup = { label: string; items: CertCard[] };
 
+const VerifySwirl = () => (
+  <svg viewBox="0 0 13 22" fill="currentColor" aria-hidden="true" className="h-[14px] w-auto shrink-0">
+    <path d="M0 -4C2.1 -2.6 2.1 2.6 0 4C-2.1 2.6 -2.1 -2.6 0 -4Z" transform="translate(8 5) rotate(46)" />
+    <path d="M0 -4.3C2.3 -2.8 2.3 2.8 0 4.3C-2.3 2.8 -2.3 -2.8 0 -4.3Z" transform="translate(4.6 11) rotate(14)" />
+    <path d="M0 -4C2.1 -2.6 2.1 2.6 0 4C-2.1 2.6 -2.1 -2.6 0 -4Z" transform="translate(8 17) rotate(-30)" />
+  </svg>
+);
+
 function CertGrid({ groups }: { groups: CertGroup[] }) {
+  const rots: Array<{ rot: string; ty: string }> = [
+    { rot: "-2deg", ty: "3px" },
+    { rot: "1.5deg", ty: "-2px" },
+    { rot: "-1deg", ty: "4px" },
+    { rot: "2deg", ty: "-3px" },
+    { rot: "-1.8deg", ty: "2px" },
+    { rot: "1.2deg", ty: "-1px" },
+  ];
   return (
     <div className="mt-8 space-y-10 sm:space-y-14">
       {groups.map((g) => (
@@ -88,40 +104,47 @@ function CertGrid({ groups }: { groups: CertGroup[] }) {
           <p className="mb-4 font-mono text-[10px] uppercase tracking-[0.25em] text-gray-500 sm:mb-5 sm:text-[11px]">
             {g.label}
           </p>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+          <div className="flex flex-wrap justify-center gap-y-2 -m-1.5 sm:justify-start">
             {g.items.map((c, idx) => {
-              const rots = [-2, 1.5, -1, 2, -1.8, 1];
-              const rot = rots[idx % rots.length];
+              const v = rots[idx % rots.length];
               return (
                 <a
                   key={c.title}
                   href={c.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ transform: `rotate(${rot}deg)` }}
-                  className="cert-card group relative flex flex-col items-center justify-between rounded-[14px] border border-gray-200 bg-card p-4 text-center shadow-[var(--shadow-card)] sm:p-5"
+                  style={{ ["--rot" as string]: v.rot, ["--ty" as string]: v.ty }}
+                  className="cert-card group relative -m-1.5 flex flex-col items-center rounded-xl bg-gradient-to-b from-gray-50 to-white px-3.5 py-5 text-center dark:from-gray-100 dark:to-gray-50"
                 >
-                  <div className="flex h-10 w-10 items-center justify-center rounded-md bg-background sm:h-11 sm:w-11">
-                    <img
-                      src={c.logo}
-                      alt=""
-                      className="max-h-full max-w-full object-contain"
-                    />
-                  </div>
-                  <h3 className="mt-3 text-[12px] font-medium leading-snug text-gray-700 transition-colors group-hover:text-ink sm:mt-4 sm:text-[13px]">
+                  <span
+                    aria-hidden="true"
+                    className="pointer-events-none absolute inset-[6px] rounded-lg border border-gray-200/80 group-hover:border-gray-300"
+                  />
+                  <img
+                    src={c.logo}
+                    alt={`${c.issuer} logo`}
+                    className="relative h-9 w-9 rounded-md border border-gray-200 bg-white object-contain p-1"
+                  />
+                  <h3 className="relative mt-3 text-[13px] font-semibold leading-snug text-ink">
                     {c.title}
                   </h3>
-                  <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.18em] text-gray-500 transition-colors group-hover:text-ink sm:text-[10px]">
+                  <p className="relative mt-1 font-mono text-[9.5px] uppercase tracking-wider text-gray-400">
                     {c.issuer}
                   </p>
                   {c.note && (
-                    <p className="mt-1 line-clamp-2 text-[10px] leading-snug text-gray-500 transition-colors group-hover:text-gray-700 sm:text-[11px]">
+                    <p className="relative mt-1 line-clamp-2 text-[10px] leading-snug text-gray-500">
                       {c.note}
                     </p>
                   )}
-                  <p className="mt-3 font-mono text-[9px] uppercase tracking-[0.22em] text-gray-400 transition-colors group-hover:text-ink sm:mt-4 sm:text-[10px]">
-                    ‹ verify ›
-                  </p>
+                  <div className="relative mt-auto flex items-center gap-1.5 pt-3 text-gray-300 group-hover:text-ink">
+                    <VerifySwirl />
+                    <span className="font-mono text-[9px] uppercase tracking-[0.16em] text-gray-400 group-hover:text-ink">
+                      Verify
+                    </span>
+                    <span className="inline-flex -scale-x-100">
+                      <VerifySwirl />
+                    </span>
+                  </div>
                 </a>
               );
             })}
@@ -131,6 +154,7 @@ function CertGrid({ groups }: { groups: CertGroup[] }) {
     </div>
   );
 }
+
 
 export const Route = createFileRoute("/")({
   component: Portfolio,
@@ -349,10 +373,10 @@ function AboutSection() {
               </span>
             </div>
 
-            <h1 className="display-pixel min-w-0 flex-1 text-[clamp(1.25rem,6vw,2.25rem)] leading-[1.05] text-ink">
-              Engr. Justine Lauredo,{" "}
-              <span className="text-gray-500">ECT</span>
+            <h1 className="display-pixel min-w-0 flex-1 whitespace-nowrap text-[clamp(0.95rem,4.6vw,1.9rem)] leading-[1.05] tracking-tight text-ink">
+              Engr. Justine Lauredo, <span className="text-gray-500">ECT</span>
             </h1>
+
           </div>
 
           <p className="mt-5 font-jetbrains text-lg text-gray-700 sm:text-xl">
@@ -413,25 +437,54 @@ function AboutSection() {
       <section className="mt-16 fade-up">
         <SectionHeader num="01" label="about" />
         <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">skills & domains</h2>
-        <div className="mt-6 space-y-4 text-justify text-[15px] leading-relaxed text-gray-700">
-          <p>
-            I am a Licensed Electronics Engineer and Electronics Technician working as an
-            AI Researcher. My work sits at the intersection of hardware circuits, embedded
-            systems, and applied intelligence.
-          </p>
-          <p>
-            I have a growing foundation in Artificial Intelligence, IoT, and
-            renewable-energy systems, including machine-learning models and GIS-based
-            solar simulations I've presented at IEEE-sponsored international conferences
-            in Malaysia and Thailand.
-          </p>
-          <p>
-            I'm comfortable moving between artificial intelligence, software, 3D
-            modelling, embedded prototyping, and data analytics — and dedicated to
-            refining my engineering expertise through hands-on experience and structured
-            mentorship.
-          </p>
+
+        <div className="mt-6 grid gap-8 sm:grid-cols-[1fr_220px] sm:items-start">
+          <div className="space-y-4 text-justify text-[15px] leading-relaxed text-gray-700">
+            <p>
+              I am a Licensed Electronics Engineer and Electronics Technician working as an
+              AI Researcher. My work sits at the intersection of hardware circuits, embedded
+              systems, and applied intelligence.
+            </p>
+            <p>
+              I have a growing foundation in Artificial Intelligence, IoT, and
+              renewable-energy systems, including machine-learning models and GIS-based
+              solar simulations I've presented at IEEE-sponsored international conferences
+              in Malaysia and Thailand.
+            </p>
+            <p>
+              I'm comfortable moving between artificial intelligence, software, 3D
+              modelling, embedded prototyping, and data analytics — and dedicated to
+              refining my engineering expertise through hands-on experience and structured
+              mentorship.
+            </p>
+          </div>
+
+          {/* Creative portrait */}
+          <figure className="group relative mx-auto w-full max-w-[220px] sm:mx-0">
+            <span aria-hidden="true" className="halftone pointer-events-none absolute -inset-4 -z-10 opacity-60" />
+            <span aria-hidden="true" className="pointer-events-none absolute -left-3 -top-3 h-16 w-16 rounded-md border border-ink/70" />
+            <span aria-hidden="true" className="pointer-events-none absolute -bottom-3 -right-3 h-16 w-16 rounded-md border border-ink/70" />
+            <div className="relative overflow-hidden rounded-lg border border-gray-200 bg-background shadow-[var(--shadow-card)] transition-transform duration-500 group-hover:-translate-y-1">
+              <div className="relative aspect-[4/5]">
+                <img
+                  src={portraitAsset.url}
+                  alt="Portrait of Justine Lauredo"
+                  className="h-full w-full object-cover grayscale transition-all duration-700 group-hover:grayscale-0"
+                />
+                <span className="pointer-events-none absolute inset-0 mix-blend-multiply opacity-20 halftone" />
+                <span className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-background/70 to-transparent" />
+              </div>
+              <figcaption className="flex items-center justify-between border-t border-gray-200 px-3 py-2">
+                <span className="font-mono text-[9px] uppercase tracking-widest text-gray-500">jdl · 2026</span>
+                <span className="status-dot inline-block h-1.5 w-1.5 rounded-full bg-ink" />
+              </figcaption>
+            </div>
+            <span aria-hidden="true" className="pointer-events-none absolute -bottom-6 left-1 font-mono text-[9px] uppercase tracking-[0.3em] text-gray-400">
+              /portrait — muntinlupa, ph
+            </span>
+          </figure>
         </div>
+
 
         <div className="mt-8 flex flex-wrap gap-1.5">
           {[
@@ -971,15 +1024,17 @@ function EducationSection() {
       <SectionHeader num="07" label="education" />
       <h2 className="display-pixel text-2xl lowercase text-ink sm:text-3xl">educational background</h2>
 
-      <div className="mt-8 space-y-6 border-l border-gray-200 pl-6">
+      <div className="relative mt-8 space-y-6 pl-6">
+        <span aria-hidden="true" className="edu-line absolute left-0 top-0 h-full w-px bg-gradient-to-b from-ink/60 via-gray-300 to-transparent" />
         {items.map((e, i) => (
           <div
             key={e.school}
-            className="relative tab-enter"
-            style={{ animationDelay: `${i * 80}ms` }}
+            className="group relative tab-enter"
+            style={{ animationDelay: `${i * 90}ms` }}
           >
-            <span className="absolute -left-[29px] top-1.5 h-2 w-2 rounded-full border border-gray-300 bg-background" />
-            <div className="card-soft p-6">
+            <span className="edu-dot-pulse absolute -left-[29px] top-3 h-2.5 w-2.5 rounded-full border border-gray-300 bg-background transition-all duration-300 group-hover:scale-125 group-hover:border-ink group-hover:bg-ink" />
+            <span aria-hidden="true" className="absolute -left-[22px] top-4 h-px w-4 origin-left scale-x-0 bg-ink transition-transform duration-500 group-hover:scale-x-100" />
+            <div className="card-soft p-6 transition-all duration-500 group-hover:card-soft-hover group-hover:translate-x-1">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <p className="label-mono">{e.when}</p>
                 <p className="font-mono text-[11px] text-gray-500">{e.degree}</p>
@@ -990,6 +1045,7 @@ function EducationSection() {
           </div>
         ))}
       </div>
+
     </section>
   );
 }
