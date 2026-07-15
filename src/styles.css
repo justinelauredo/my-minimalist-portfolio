@@ -231,12 +231,9 @@
 }
 .cert-card:hover h3,
 .cert-card:hover p {
-  color: var(--gray-800);
+  color: #ffffff;
 }
-.dark .cert-card:hover h3,
-.dark .cert-card:hover p {
-  color: #f4f4f5;
-}
+
 
 @keyframes edu-draw {
   from { transform: scaleY(0); }
