@@ -212,14 +212,19 @@
 }
 
 @utility cert-card {
+  width: 160px;
+  height: 240px;
+  z-index: 1;
+  transform: rotate(var(--rot, 0deg)) translateY(var(--ty, 0px));
   transition:
-    transform 380ms cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 380ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 350ms ease,
     border-color 380ms ease;
   will-change: transform;
 }
 .cert-card:hover {
-  transform: translateY(-5px) rotate(0deg) !important;
+  transform: rotate(0deg) translateY(-6px) !important;
+  z-index: 10;
   box-shadow: var(--shadow-card-hover);
   border-color: color-mix(in oklab, var(--ink) 30%, var(--gray-200));
 }
@@ -230,6 +235,23 @@
 .dark .cert-card:hover h3,
 .dark .cert-card:hover p {
   color: #f4f4f5;
+}
+
+@keyframes edu-draw {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+.edu-line {
+  transform-origin: top;
+  animation: edu-draw 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes edu-pulse-ring {
+  0% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--ink) 40%, transparent); }
+  70% { box-shadow: 0 0 0 10px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+.edu-dot-pulse { animation: edu-pulse-ring 2.4s ease-out infinite; }
+
 }
 
 @utility portrait-frame {
